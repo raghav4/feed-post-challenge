@@ -1,7 +1,9 @@
+import { Post } from "./components/Feed/Post/Post";
+
 function App() {
   return (
     <div>
-      <h1>Hello, World</h1>
+      <Post />
     </div>
   );
 }
