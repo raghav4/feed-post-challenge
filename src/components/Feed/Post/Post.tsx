@@ -1,6 +1,15 @@
+import { Heart, MessageCircle, Send } from "lucide-react";
+
+import { IconButton } from "../../IconButton/IconButton";
 import { Reaction } from "./Reaction/Reaction";
 
 export const Post = () => {
+  const actions = [
+    { icon: Heart, label: "Like this post", onClick: () => {} },
+    { icon: MessageCircle, label: "Comment on this post", onClick: () => {} },
+    { icon: Send, label: "Share this post", onClick: () => {} },
+  ];
+
   return (
     <div className="min-h-screen bg-[#F9FAFB] p-8">
       <div className="max-w-3xl mx-auto">
@@ -29,6 +38,17 @@ export const Post = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="flex gap-6 mt-6 ml-2" aria-label="Post actions">
+        {actions.map(({ icon, label, onClick }) => (
+          <IconButton
+            key={label}
+            icon={icon}
+            onClick={onClick}
+            ariaLabel={label}
+          />
+        ))}
       </div>
     </div>
   );

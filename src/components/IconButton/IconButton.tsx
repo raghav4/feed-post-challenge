@@ -1,14 +1,20 @@
 type IconButtonProps = {
-  ariaLabel: string;
-  icon: React.ReactNode;
+  ariaLabel?: string;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export const IconButton = ({ icon, ariaLabel }: IconButtonProps) => (
+export const IconButton = ({
+  icon: Icon,
+  ariaLabel,
+  onClick,
+}: IconButtonProps) => (
   <button
     type="button"
     className="transition-transform hover:scale-110"
-    aria-label={ariaLabel}
+    aria-label={ariaLabel ?? "post action"}
+    onClick={onClick}
   >
-    {icon}
+    <Icon className="w-7 h-7 text-gray-800" strokeWidth={1.5} />
   </button>
 );
