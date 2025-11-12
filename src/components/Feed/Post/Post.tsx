@@ -4,12 +4,12 @@ export const Post = () => {
   return (
     <div className="min-h-screen bg-[#F9FAFB] p-8">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-[32px] p-8">
+        <div className="bg-white rounded-[32px] p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-center gap-4 mb-6">
             <img
               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
               alt="Theresa Webb"
-              className="w-16 h-16 rounded-[20px]"
+              className="w-16 h-16 rounded-[20px] object-cover"
             />
             <div>
               <h3 className="text-xl font-semibold text-gray-900">
