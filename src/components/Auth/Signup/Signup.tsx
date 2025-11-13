@@ -38,10 +38,15 @@ export const Signup = ({ onClose }: SignupProps) => {
 
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div>
-              <label className="mb-2 block text-[14px] font-medium text-[#1C1C1E]">
+              <label
+                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                htmlFor="username"
+              >
                 Email or username
               </label>
               <input
+                name="username"
+                id="username"
                 type="text"
                 placeholder="Enter your email or username"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
@@ -50,11 +55,16 @@ export const Signup = ({ onClose }: SignupProps) => {
             </div>
 
             <div>
-              <label className="mb-2 block text-[14px] font-medium text-[#1C1C1E]">
+              <label
+                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
                 type="password"
+                name="password"
+                id="password"
                 placeholder="Enter your password"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
                 aria-label="Password"
@@ -62,10 +72,15 @@ export const Signup = ({ onClose }: SignupProps) => {
             </div>
 
             <div>
-              <label className="mb-2 block text-[14px] font-medium text-[#1C1C1E]">
+              <label
+                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                htmlFor="repeatPassword"
+              >
                 Repeat password
               </label>
               <input
+                id="repeatPassword"
+                name="repeatPassword"
                 type="password"
                 placeholder="Enter your password again"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
