@@ -6,6 +6,11 @@ type ReactionProps = {
 };
 
 export const Reaction = ({ reaction, ariaLabel }: ReactionProps) => {
+  if (!REACTION_MAP[reaction]) {
+    console.warn(`Invalid reaction provided`, reaction);
+    return null;
+  }
+
   const { emoji, label } = REACTION_MAP[reaction];
 
   return (
