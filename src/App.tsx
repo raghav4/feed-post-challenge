@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { AppHeader } from "./components/AppHeader/AppHeader";
 import { Signin } from "./components/Auth/Signin/Signin";
 import { Signup } from "./components/Auth/Signup/Signup";
 import { Composer } from "./components/Feed/Composer/Composer";
@@ -89,24 +90,27 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-8" ref={elementRef}>
-      <Composer onClickPost={onClickPost} />
+    <div>
+      <AppHeader />
+      <div className="min-h-screen bg-white py-8" ref={elementRef}>
+        <Composer onClickPost={onClickPost} />
 
-      <div className="max-w-3xl mx-auto px-4 space-y-6">
-        {posts.map(({ id, author, content, timestamp, reaction, liked }) => (
-          <Post
-            key={id}
-            author={author}
-            content={content}
-            timestamp={timestamp}
-            reaction={reaction}
-            liked={liked}
-          />
-        ))}
+        <div className="max-w-3xl mx-auto px-4 space-y-6">
+          {posts.map(({ id, author, content, timestamp, reaction, liked }) => (
+            <Post
+              key={id}
+              author={author}
+              content={content}
+              timestamp={timestamp}
+              reaction={reaction}
+              liked={liked}
+            />
+          ))}
+        </div>
+
+        {showLogin && <Signin />}
+        {showSignup && <Signup />}
       </div>
-
-      {showLogin && <Signin />}
-      {showSignup && <Signup />}
     </div>
   );
 }
