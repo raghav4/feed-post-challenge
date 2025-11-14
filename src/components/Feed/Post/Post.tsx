@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Send } from "lucide-react";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { IconButton } from "../../IconButton/IconButton";
 import { Reaction } from "./Reaction/Reaction";
 import { ReactionType } from "./Reaction/constants";
@@ -40,7 +40,7 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
       type: "comment",
     },
     {
-      icon: Send,
+      icon: Share2,
       label: "Share this post",
       onClick: (e) => {
         alert("Functionality not implemented");
@@ -51,17 +51,17 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-gray-100 rounded-2xl p-2">
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="bg-gray-100 rounded-2xl p-2 transition-all duration-200">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300">
           <div className="flex items-start gap-4 mb-4">
             <div className="flex flex-col items-center gap-2">
               <img
                 src={author.imageUrl}
                 alt={author.name}
-                className="w-14 h-14 rounded-md object-cover ring-2 ring-white shadow-sm"
+                className="w-14 h-14 rounded-md object-cover ring-2 ring-white shadow-sm hover:ring-blue-100 transition-all duration-300"
               />
               {reaction && (
-                <div className="mt-1">
+                <div className="mt-1 transition-transform duration-200 hover:scale-110">
                   <Reaction reaction={reaction} />
                 </div>
               )}
@@ -70,15 +70,17 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-200">
                     {author.name}
                   </h3>
-                  <p className="text-sm text-gray-400 mt-0.5">{timestamp}</p>
+                  <p className="text-sm text-gray-400 mt-0.5 transition-colors duration-200">
+                    {timestamp}
+                  </p>
                 </div>
               </div>
 
               <div className="mt-3 flex gap-3 items-start">
-                <p className="text-gray-800 text-base leading-7 whitespace-pre-line">
+                <p className="text-gray-800 text-base leading-7 whitespace-pre-line transition-colors duration-200">
                   {content}
                 </p>
               </div>
@@ -86,15 +88,14 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
           </div>
         </div>
 
-        <div className="p-3">
-          <div className="flex gap-5">
+        <div className="h-12 flex items-center px-2">
+          <div className="flex gap-1 items-center">
             {actions.map(({ icon, label, onClick, type }) => (
               <IconButton
                 key={type}
                 icon={icon}
                 ariaLabel={label}
                 onClick={onClick}
-                iconClassName="transition transform hover:scale-110 hover:bg-gray-200 duration-150 rounded-lg"
               />
             ))}
           </div>

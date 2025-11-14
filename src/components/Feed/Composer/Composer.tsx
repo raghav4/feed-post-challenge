@@ -32,7 +32,7 @@ const ToolbarButton = ({
   className = "",
 }: ToolbarButtonProps) => (
   <button
-    className={`p-2 rounded-lg hover:bg-gray-200 ${className}`}
+    className={`p-2 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:scale-110 active:scale-95 ${className}`}
     onClick={() => alert("Functionality not implemented")}
     title={tooltip}
   >
@@ -42,6 +42,7 @@ const ToolbarButton = ({
 
 export const Composer = ({ onClickPost }: ComposerProps) => {
   const [postContent, setPostContent] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const { isAuthenticated } = useAuthentication();
 
   const onInputKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -51,6 +52,7 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
       postContent.trim().length > 1
     ) {
       onClickPost(postContent);
+      setPostContent("");
     }
   };
 
@@ -108,12 +110,18 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto mb-12">
-      <div className="bg-gray-100 rounded-2xl p-2">
-        <div className="bg-white rounded-2xl border border-gray-200 p-3">
+    <div className="max-w-2xl mx-auto mb-12 transition-all duration-300 ease-out">
+      <div className="bg-gray-100 rounded-2xl p-2 transition-all duration-200">
+        <div
+          className={`bg-white rounded-2xl border p-3 transition-all duration-300 ${
+            isFocused
+              ? "border-blue-400 shadow-lg"
+              : "border-gray-200 shadow-sm"
+          }`}
+        >
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-4 bg-gray-100 px-2 py-1 rounded-xl">
-              <select className="px-3 py-1.5 text-sm bg-white rounded-md border border-gray-300 outline-none focus:outline-none">
+            <div className="flex items-center gap-4 bg-gray-100 px-2 py-1 rounded-xl transition-all duration-200">
+              <select className="px-3 py-1.5 text-sm bg-white rounded-md border border-gray-300 outline-none focus:outline-none transition-all duration-200 hover:border-gray-400 focus:border-blue-400 cursor-pointer">
                 <option>Paragraph</option>
                 <option>Heading</option>
               </select>
@@ -144,7 +152,7 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
             </div>
 
             <button
-              className="p-3 rounded-xl bg-red-100 text-red-600 hover:bg-red-200"
+              className="p-3 rounded-xl bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-200 hover:scale-105 active:scale-95"
               aria-label="Delete"
               onClick={() => alert("Functionality not implemented")}
             >
@@ -156,11 +164,12 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
             <button
               type="button"
               onClick={() => alert("Functionality not implemented")}
+              className="transition-transform duration-200 hover:scale-110 active:scale-95"
             >
               <Smile size={20} className="text-gray-500" />
             </button>
             <textarea
-              className="w-full text-[15px] resize-none outline-none bg-transparent"
+              className="w-full text-[15px] resize-none outline-none bg-transparent transition-all duration-200"
               rows={5}
               placeholder="How are you feeling today?"
               value={postContent}
@@ -170,10 +179,12 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
                 }
               }}
               onKeyDown={onInputKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             />
           </div>
 
-          <div className="w-full h-px bg-gray-200 mb-2" />
+          <div className="w-full h-px bg-gray-200 mb-2 transition-colors duration-200" />
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
@@ -183,12 +194,27 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
             </div>
 
             <button
-              className="p-2 rounded-xl hover:bg-gray-100"
-              onClick={() => onClickPost(postContent)}
+              className={`p-2 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
+                postContent.trim().length > 0
+                  ? "hover:bg-blue-50"
+                  : "hover:bg-gray-100"
+              }`}
+              onClick={() => {
+                onClickPost(postContent);
+                setPostContent("");
+              }}
               aria-label="Publish content"
               title="Publish"
+              disabled={postContent.trim().length === 0}
             >
-              <SendHorizontal size={22} className="text-blue-600" />
+              <SendHorizontal
+                size={22}
+                className={`transition-colors duration-200 ${
+                  postContent.trim().length > 0
+                    ? "text-blue-600"
+                    : "text-gray-400"
+                }`}
+              />
             </button>
           </div>
         </div>

@@ -1,10 +1,12 @@
 type IconButtonProps = {
   ariaLabel?: string;
-  icon: React.ComponentType<{
-    className?: string;
-    strokeWidth?: number;
-    size?: number;
-  }>;
+  icon: React.ComponentType<
+    Partial<{
+      className: string;
+      strokeWidth: number;
+      size: number;
+    }>
+  >;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   iconClassName?: string;
 };
@@ -13,18 +15,13 @@ export const IconButton = ({
   icon: Icon,
   ariaLabel,
   onClick,
-  iconClassName = "",
 }: IconButtonProps) => (
   <button
     type="button"
-    className="transition-transform hover:scale-110"
-    aria-label={ariaLabel ?? "post action"}
+    className="h-10 w-10 flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-gray-100 active:bg-gray-200"
+    aria-label={ariaLabel}
     onClick={onClick}
   >
-    <Icon
-      className={["w-7 h-7 text-gray-800", iconClassName].join(" ")}
-      strokeWidth={1.5}
-      size={10}
-    />
+    <Icon className="text-gray-700" strokeWidth={1.5} size={22} />
   </button>
 );
