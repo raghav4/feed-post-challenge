@@ -17,7 +17,7 @@ export const useInteraction = (ref: React.RefObject<HTMLElement | null>) => {
       if (!isAuthenticated) {
         e.preventDefault();
         e.stopPropagation();
-        navigate("/login");
+        navigate("/signin");
       }
     };
 

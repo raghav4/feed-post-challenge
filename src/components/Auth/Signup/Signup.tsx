@@ -138,7 +138,7 @@ export const Signup = () => {
             Already have an account?{" "}
             <button
               type="button"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/signin")}
               className="cursor-pointer font-medium text-[#4F46E5]"
             >
               Sign In
