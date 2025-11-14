@@ -2,6 +2,7 @@ import { LogIn } from "lucide-react";
 import { FormEvent, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useAuthentication } from "../../../hooks/useAuthentication";
+import { Navigate } from "react-router-dom";
 
 type SigninProps = {
   onClose: () => void;
@@ -17,6 +18,10 @@ export const Signin = ({ onClose }: SigninProps) => {
   }, []);
 
   const auth = useAuthentication();
+
+  if (auth.isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

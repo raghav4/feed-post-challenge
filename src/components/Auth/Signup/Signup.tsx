@@ -1,6 +1,8 @@
+import { LogIn } from "lucide-react";
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { LogIn } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { useAuthentication } from "../../../hooks/useAuthentication";
 
 type SignupProps = {
   onClose: () => void;
@@ -15,6 +17,12 @@ export const Signup = ({ onClose }: SignupProps) => {
       document.body.style.overflow = prev;
     };
   }, [onClose]);
+
+  const { isAuthenticated } = useAuthentication();
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
