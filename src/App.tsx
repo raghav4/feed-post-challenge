@@ -6,7 +6,6 @@ import { Composer } from "./components/Feed/Composer/Composer";
 import { Post } from "./components/Feed/Post/Post";
 import { ReactionType } from "./components/Feed/Post/Reaction/constants";
 import { useInteraction } from "./hooks/useInteraction";
-import { useAuthentication } from "./hooks/useAuthentication";
 
 type PostType = {
   id: string;
@@ -63,12 +62,10 @@ function App() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState<Array<PostType>>(initialPosts);
 
-  const { isAuthenticated } = useAuthentication();
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
-  const elementRef = useRef(null);
-
-  const showLogin = !isAuthenticated && pathname === "/login";
-  const showSignup = !isAuthenticated && pathname === "/signup";
+  const showLogin = pathname === "/login";
+  const showSignup = pathname === "/signup";
 
   const closeModal = () => navigate("/");
 
@@ -81,9 +78,9 @@ function App() {
         content: postContent,
         timestamp: Date.now().toLocaleString(),
         author: {
-          name: "Atlys",
+          name: "John Doe",
           imageUrl:
-            "https://play-lh.googleusercontent.com/AwCJhJx0qCpdOazxUc0HWXWXn2PF3P1rAlqOzTKT1ifBoicZHPwoq9MjamhGpwzyfA",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo_R_vlnUz9UhylMPCccagw4dMqhbs4UMPAA&s",
         },
       },
       ...prevPosts,
