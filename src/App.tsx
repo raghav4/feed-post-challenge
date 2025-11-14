@@ -103,8 +103,8 @@ function App() {
         ))}
       </div>
 
-      {showLogin && <Signin onClose={closeModal} />}
-      {showSignup && <Signup onClose={closeModal} />}
+      {showLogin && <Signin />}
+      {showSignup && <Signup />}
     </div>
   );
 }

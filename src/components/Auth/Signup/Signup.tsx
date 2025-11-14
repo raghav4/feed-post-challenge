@@ -1,14 +1,10 @@
 import { LogIn } from "lucide-react";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../../../hooks/useAuthentication";
 
-type SignupProps = {
-  onClose: () => void;
-};
-
-export const Signup = ({ onClose }: SignupProps) => {
+export const Signup = () => {
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -16,13 +12,36 @@ export const Signup = ({ onClose }: SignupProps) => {
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [onClose]);
+  }, []);
 
-  const { isAuthenticated } = useAuthentication();
+  const [errors, setErrors] = useState<string | null>(null);
+  const { isAuthenticated, actions } = useAuthentication();
+  const navigate = useNavigate();
 
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (password !== confirmPassword) {
+      setErrors("Passwords do not match");
+      return;
+    }
+
+    const error = actions.signup({ username, password });
+
+    if (error) {
+      setErrors(error);
+      return;
+    }
+  };
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -44,7 +63,7 @@ export const Signup = ({ onClose }: SignupProps) => {
             Create an account to access all the features on this app
           </p>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             <div>
               <label
                 className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
@@ -55,7 +74,8 @@ export const Signup = ({ onClose }: SignupProps) => {
               <input
                 name="username"
                 id="username"
-                type="text"
+                type="email"
+                required
                 placeholder="Enter your email or username"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
                 aria-label="Email or username"
@@ -73,6 +93,7 @@ export const Signup = ({ onClose }: SignupProps) => {
                 type="password"
                 name="password"
                 id="password"
+                required
                 placeholder="Enter your password"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
                 aria-label="Password"
@@ -82,19 +103,26 @@ export const Signup = ({ onClose }: SignupProps) => {
             <div>
               <label
                 className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
-                htmlFor="repeatPassword"
+                htmlFor="confirmPassword"
               >
                 Repeat password
               </label>
               <input
-                id="repeatPassword"
-                name="repeatPassword"
+                id="confirmPassword"
+                name="confirmPassword"
                 type="password"
+                required
                 placeholder="Enter your password again"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
                 aria-label="Repeat password"
               />
             </div>
+
+            {errors && (
+              <div className="text-red-600 text-sm bg-red-100 border border-red-200 p-2 rounded">
+                {errors}
+              </div>
+            )}
 
             <button
               type="submit"
@@ -110,7 +138,7 @@ export const Signup = ({ onClose }: SignupProps) => {
             Already have an account?{" "}
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => navigate("/login")}
               className="cursor-pointer font-medium text-[#4F46E5]"
             >
               Sign In

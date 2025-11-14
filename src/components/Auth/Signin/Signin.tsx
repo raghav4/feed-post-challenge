@@ -1,14 +1,10 @@
 import { LogIn } from "lucide-react";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useAuthentication } from "../../../hooks/useAuthentication";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
-type SigninProps = {
-  onClose: () => void;
-};
-
-export const Signin = ({ onClose }: SigninProps) => {
+export const Signin = () => {
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -18,6 +14,9 @@ export const Signin = ({ onClose }: SigninProps) => {
   }, []);
 
   const auth = useAuthentication();
+  const navigate = useNavigate();
+
+  const [error, setError] = useState<string | null>(null);
 
   if (auth.isAuthenticated) {
     return <Navigate to="/" />;
@@ -25,13 +24,18 @@ export const Signin = ({ onClose }: SigninProps) => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
-
     const username = (formData.get("username") as string) ?? "";
     const password = (formData.get("password") as string) ?? "";
 
-    auth.actions.authenticate({ username, password });
+    const err = auth.actions.authenticate({ username, password });
+
+    if (err) {
+      setError(err);
+      return;
+    }
   };
 
   return ReactDOM.createPortal(
@@ -55,9 +59,15 @@ export const Signin = ({ onClose }: SigninProps) => {
           </p>
 
           <form className="space-y-5" onSubmit={onSubmit}>
+            {error && (
+              <div className="text-red-600 bg-red-100 border border-red-200 p-2 rounded text-sm">
+                {error}
+              </div>
+            )}
+
             <div>
               <label
-                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                className="mb-2 block text-[14px] font-medium"
                 htmlFor="username"
               >
                 Email or username
@@ -65,16 +75,15 @@ export const Signin = ({ onClose }: SigninProps) => {
               <input
                 name="username"
                 id="username"
-                type="email"
+                type="text"
                 placeholder="Enter your email or username"
-                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
-                aria-label="Email or username"
+                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px]"
               />
             </div>
 
             <div>
               <label
-                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                className="mb-2 block text-[14px] font-medium"
                 htmlFor="password"
               >
                 Password
@@ -84,27 +93,26 @@ export const Signin = ({ onClose }: SigninProps) => {
                 name="password"
                 id="password"
                 placeholder="Enter your password"
-                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
-                aria-label="Password"
+                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full h-[48px] rounded-[12px] bg-[#4F46E5] text-[15px] font-medium text-white hover:bg-[#4338CA] transition-colors"
+              className="w-full h-[48px] rounded-[12px] bg-[#4F46E5] text-[15px] font-medium text-white hover:bg-[#4338CA]"
             >
               Sign In
             </button>
           </form>
         </div>
 
-        <div className="rounded-b-[32px] py-3 mt-2 text-center bg-transparent">
+        <div className="rounded-b-[32px] py-3 mt-2 text-center">
           <p className="text-[14px] text-gray-600">
             Don't have an account?{" "}
             <button
               type="button"
-              onClick={onClose}
-              className="cursor-pointer font-medium text-[#4F46E5] underline-offset-2"
+              className="font-medium text-[#4F46E5]"
+              onClick={() => navigate("/signup")}
             >
               Sign Up
             </button>
