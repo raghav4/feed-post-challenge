@@ -1,4 +1,7 @@
 import { useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Signin } from "./components/Auth/Signin/Signin";
+import { Signup } from "./components/Auth/Signup/Signup";
 import { Composer } from "./components/Feed/Composer/Composer";
 import { Post } from "./components/Feed/Post/Post";
 import { ReactionType } from "./components/Feed/Post/Reaction/constants";
@@ -55,9 +58,16 @@ const initialPosts: Array<PostType> = [
 ];
 
 function App() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Array<PostType>>(initialPosts);
 
   const elementRef = useRef(null);
+
+  const showLogin = pathname === "/login";
+  const showSignup = pathname === "/signup";
+
+  const closeModal = () => navigate("/");
 
   useInteraction(elementRef);
 
@@ -92,6 +102,9 @@ function App() {
           />
         ))}
       </div>
+
+      {showLogin && <Signin onClose={closeModal} />}
+      {showSignup && <Signup onClose={closeModal} />}
     </div>
   );
 }
