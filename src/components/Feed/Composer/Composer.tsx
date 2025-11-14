@@ -192,7 +192,7 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
             />
           </div>
 
-          <div className="w-full h-px bg-gray-200 mb-2 transition-colors duration-200" />
+          <div className="-mx-3 h-px bg-gray-200 mb-2 transition-colors duration-200" />
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
