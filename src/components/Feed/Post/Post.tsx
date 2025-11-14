@@ -2,7 +2,6 @@ import { Heart, MessageCircle, Send } from "lucide-react";
 import { IconButton } from "../../IconButton/IconButton";
 import { Reaction } from "./Reaction/Reaction";
 import { ReactionType } from "./Reaction/constants";
-import { useState } from "react";
 
 type PostProps = {
   author: {
@@ -22,32 +21,30 @@ type Actions = Array<{
   type: "comment" | "like" | "share";
 }>;
 
-export const Post = ({
-  content,
-  timestamp,
-  author,
-  reaction,
-  liked,
-}: PostProps) => {
-  const [isLiked, setIsLiked] = useState(!!liked);
-
+export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
   const actions: Actions = [
     {
       icon: Heart,
       label: "Like this post",
-      onClick: (e) => setIsLiked((prev) => !prev),
+      onClick: (e) => {
+        alert("Functionality not implemented");
+      },
       type: "like",
     },
     {
       icon: MessageCircle,
       label: "Comment on this post",
-      onClick: (e) => {},
+      onClick: (e) => {
+        alert("Functionality not implemented");
+      },
       type: "comment",
     },
     {
       icon: Send,
       label: "Share this post",
-      onClick: (e) => {},
+      onClick: (e) => {
+        alert("Functionality not implemented");
+      },
       type: "share",
     },
   ];
@@ -97,7 +94,6 @@ export const Post = ({
                 icon={icon}
                 ariaLabel={label}
                 onClick={onClick}
-                iconClassName={type === "like" && isLiked ? "text-red-500" : ""}
               />
             ))}
           </div>
