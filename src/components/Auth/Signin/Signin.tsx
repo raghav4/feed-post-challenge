@@ -75,7 +75,7 @@ export const Signin = () => {
               <input
                 name="username"
                 id="username"
-                type="text"
+                type="email"
                 placeholder="Enter your email or username"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px]"
               />
