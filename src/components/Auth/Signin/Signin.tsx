@@ -1,6 +1,7 @@
 import { LogIn } from "lucide-react";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useAuthentication } from "../../../hooks/useAuthentication";
 
 type SigninProps = {
   onClose: () => void;
@@ -14,6 +15,19 @@ export const Signin = ({ onClose }: SigninProps) => {
       document.body.style.overflow = prev;
     };
   }, []);
+
+  const auth = useAuthentication();
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const username = (formData.get("username") as string) ?? "";
+    const password = (formData.get("password") as string) ?? "";
+
+    auth.actions.authenticate({ username, password });
+  };
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -35,7 +49,7 @@ export const Signin = ({ onClose }: SigninProps) => {
             Sign in to access all the features on this app
           </p>
 
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-5" onSubmit={onSubmit}>
             <div>
               <label
                 className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
@@ -46,7 +60,7 @@ export const Signin = ({ onClose }: SigninProps) => {
               <input
                 name="username"
                 id="username"
-                type="text"
+                type="email"
                 placeholder="Enter your email or username"
                 className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
                 aria-label="Email or username"
