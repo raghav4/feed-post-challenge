@@ -94,6 +94,7 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
                 icon={icon}
                 ariaLabel={label}
                 onClick={onClick}
+                iconClassName="transition transform hover:scale-110 hover:bg-gray-200 duration-150 rounded-lg"
               />
             ))}
           </div>
