@@ -14,7 +14,11 @@ export const Reaction = ({ reaction, ariaLabel }: ReactionProps) => {
   const { emoji, label } = REACTION_MAP[reaction];
 
   return (
-    <div role="img" aria-label={label ?? "Reaction"}>
+    <div
+      className="text-2xl bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full"
+      role="img"
+      aria-label={label ?? "Reaction"}
+    >
       {emoji}
     </div>
   );
