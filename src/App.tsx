@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Signin } from "./components/Auth/Signin/Signin";
 import { Signup } from "./components/Auth/Signup/Signup";
 import { Composer } from "./components/Feed/Composer/Composer";
@@ -16,6 +16,7 @@ type PostType = {
   content: string;
   timestamp: string;
   reaction?: ReactionType;
+  liked?: boolean;
 };
 
 const initialPosts: Array<PostType> = [
@@ -42,6 +43,7 @@ const initialPosts: Array<PostType> = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     timestamp: "5 mins ago",
     reaction: "wow" as const,
+    liked: true,
   },
   {
     id: "3",
@@ -59,15 +61,12 @@ const initialPosts: Array<PostType> = [
 
 function App() {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [posts, setPosts] = useState<Array<PostType>>(initialPosts);
 
   const elementRef = useRef<HTMLDivElement | null>(null);
 
   const showLogin = pathname === "/login";
   const showSignup = pathname === "/signup";
-
-  const closeModal = () => navigate("/");
 
   useInteraction(elementRef);
 
@@ -92,13 +91,14 @@ function App() {
       <Composer onClickPost={onClickPost} />
 
       <div className="max-w-3xl mx-auto px-4 space-y-6">
-        {posts.map(({ id, author, content, timestamp, reaction }) => (
+        {posts.map(({ id, author, content, timestamp, reaction, liked }) => (
           <Post
             key={id}
             author={author}
             content={content}
             timestamp={timestamp}
             reaction={reaction}
+            liked={liked}
           />
         ))}
       </div>

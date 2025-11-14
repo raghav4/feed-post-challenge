@@ -1,8 +1,8 @@
 import { Heart, MessageCircle, Send } from "lucide-react";
-
 import { IconButton } from "../../IconButton/IconButton";
 import { Reaction } from "./Reaction/Reaction";
 import { ReactionType } from "./Reaction/constants";
+import { useState } from "react";
 
 type PostProps = {
   author: {
@@ -12,35 +12,50 @@ type PostProps = {
   content: string;
   timestamp: string;
   reaction?: ReactionType;
+  liked?: boolean;
 };
 
-export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
-  const actions = [
-    { icon: Heart, label: "Like this post", onClick: () => {} },
-    { icon: MessageCircle, label: "Comment on this post", onClick: () => {} },
-    { icon: Send, label: "Share this post", onClick: () => {} },
+type Actions = Array<{
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  type: "comment" | "like" | "share";
+}>;
+
+export const Post = ({
+  content,
+  timestamp,
+  author,
+  reaction,
+  liked,
+}: PostProps) => {
+  const [isLiked, setIsLiked] = useState(!!liked);
+
+  const actions: Actions = [
+    {
+      icon: Heart,
+      label: "Like this post",
+      onClick: (e) => setIsLiked((prev) => !prev),
+      type: "like",
+    },
+    {
+      icon: MessageCircle,
+      label: "Comment on this post",
+      onClick: (e) => {},
+      type: "comment",
+    },
+    {
+      icon: Send,
+      label: "Share this post",
+      onClick: (e) => {},
+      type: "share",
+    },
   ];
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div
-        className="
-          bg-gray-100
-          rounded-2xl
-          p-2
-          
-        "
-      >
-        <div
-          className="
-            bg-white
-            rounded-2xl
-            border
-            border-gray-200
-            p-6
-            shadow-sm
-          "
-        >
+      <div className="bg-gray-100 rounded-2xl p-2">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <div className="flex items-start gap-4 mb-4">
             <div className="flex flex-col items-center gap-2">
               <img
@@ -76,8 +91,14 @@ export const Post = ({ content, timestamp, author, reaction }: PostProps) => {
 
         <div className="p-3">
           <div className="flex gap-5">
-            {actions.map(({ icon, label, onClick }) => (
-              <IconButton icon={icon} ariaLabel={label} onClick={onClick} />
+            {actions.map(({ icon, label, onClick, type }) => (
+              <IconButton
+                key={type}
+                icon={icon}
+                ariaLabel={label}
+                onClick={onClick}
+                iconClassName={type === "like" && isLiked ? "text-red-500" : ""}
+              />
             ))}
           </div>
         </div>
