@@ -26,6 +26,8 @@ type ToolbarButtonProps = {
   className?: string;
 };
 
+const onClickNotImplemented = () => alert("Functionality not implemented");
+
 const ToolbarButton = ({
   icon,
   tooltip,
@@ -33,7 +35,7 @@ const ToolbarButton = ({
 }: ToolbarButtonProps) => (
   <button
     className={`p-2 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:scale-110 active:scale-95 ${className}`}
-    onClick={() => alert("Functionality not implemented")}
+    onClick={onClickNotImplemented}
     title={tooltip}
   >
     {icon}
@@ -121,7 +123,13 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-4 bg-gray-100 px-2 py-1 rounded-xl transition-all duration-200">
-              <select className="px-3 py-1.5 text-sm bg-white rounded-md border border-gray-300 outline-none focus:outline-none transition-all duration-200 hover:border-gray-400 focus:border-blue-400 cursor-pointer">
+              <select
+                className="px-3 py-1.5 text-sm bg-white rounded-md border border-gray-300 outline-none focus:outline-none transition-all duration-200 hover:border-gray-400 focus:border-blue-400 cursor-pointer"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  onClickNotImplemented();
+                }}
+              >
                 <option>Paragraph</option>
                 <option>Heading</option>
               </select>
@@ -154,7 +162,7 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
             <button
               className="p-3 rounded-xl bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-200 hover:scale-105 active:scale-95"
               aria-label="Delete"
-              onClick={() => alert("Functionality not implemented")}
+              onClick={onClickNotImplemented}
             >
               <Trash2 size={18} />
             </button>
@@ -163,7 +171,7 @@ export const Composer = ({ onClickPost }: ComposerProps) => {
           <div className="flex items-start gap-2 mb-3">
             <button
               type="button"
-              onClick={() => alert("Functionality not implemented")}
+              onClick={onClickNotImplemented}
               className="transition-transform duration-200 hover:scale-110 active:scale-95"
             >
               <Smile size={20} className="text-gray-500" />
