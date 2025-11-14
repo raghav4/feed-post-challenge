@@ -8,15 +8,34 @@ import {
   Plus,
   Quote,
   SendHorizontal,
+  Smile,
   Trash2,
   Underline,
   Video,
-  Smile,
 } from "lucide-react";
+import { KeyboardEvent, useState } from "react";
+import { useAuthentication } from "../../../hooks/useAuthentication";
 
-export const Composer = () => {
+type ComposerProps = {
+  onClickPost: (content: string) => void;
+};
+
+export const Composer = ({ onClickPost }: ComposerProps) => {
+  const [postContent, setPostContent] = useState("");
+  const { isAuthenticated } = useAuthentication();
+
+  const onInputKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      e.key === "Enter" &&
+      postContent.trim().length > 1
+    ) {
+      onClickPost(postContent);
+    }
+  };
+
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto mb-12">
       <div className="bg-gray-100 rounded-2xl p-2">
         <div className="bg-white rounded-2xl border border-gray-200 p-3">
           <div className="flex items-center justify-between mb-3">
@@ -72,7 +91,10 @@ export const Composer = () => {
               </div>
             </div>
 
-            <button className="p-3 rounded-xl bg-red-100 text-red-600 hover:bg-red-200">
+            <button
+              className="p-3 rounded-xl bg-red-100 text-red-600 hover:bg-red-200"
+              aria-label="Delete"
+            >
               <Trash2 size={18} />
             </button>
           </div>
@@ -83,6 +105,13 @@ export const Composer = () => {
               className="w-full text-[15px] resize-none outline-none bg-transparent"
               rows={5}
               placeholder="How are you feeling today?"
+              value={postContent}
+              onChange={({ target }) => {
+                if (isAuthenticated) {
+                  setPostContent(target.value);
+                }
+              }}
+              onKeyDown={onInputKeyDown}
             />
           </div>
 
@@ -101,7 +130,11 @@ export const Composer = () => {
               </button>
             </div>
 
-            <button className="p-2 rounded-xl hover:bg-gray-100">
+            <button
+              className="p-2 rounded-xl hover:bg-gray-100"
+              onClick={() => onClickPost(postContent)}
+              aria-label="Post content"
+            >
               <SendHorizontal size={22} className="text-blue-600" />
             </button>
           </div>

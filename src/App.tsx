@@ -1,6 +1,21 @@
+import { useRef, useState } from "react";
+import { Composer } from "./components/Feed/Composer/Composer";
 import { Post } from "./components/Feed/Post/Post";
+import { ReactionType } from "./components/Feed/Post/Reaction/constants";
+import { useInteraction } from "./hooks/useInteraction";
 
-const posts = [
+type PostType = {
+  id: string;
+  author: {
+    name: string;
+    imageUrl?: string;
+  };
+  content: string;
+  timestamp: string;
+  reaction?: ReactionType;
+};
+
+const initialPosts: Array<PostType> = [
   {
     id: "1",
     author: {
@@ -40,8 +55,32 @@ const posts = [
 ];
 
 function App() {
+  const [posts, setPosts] = useState<Array<PostType>>(initialPosts);
+
+  const elementRef = useRef(null);
+
+  useInteraction(elementRef);
+
+  const onClickPost = (postContent: string) => {
+    setPosts((prevPosts) => [
+      {
+        id: `${prevPosts.length + 1}`,
+        content: postContent,
+        timestamp: Date.now().toLocaleString(),
+        author: {
+          name: "Atlys",
+          imageUrl:
+            "https://play-lh.googleusercontent.com/AwCJhJx0qCpdOazxUc0HWXWXn2PF3P1rAlqOzTKT1ifBoicZHPwoq9MjamhGpwzyfA",
+        },
+      },
+      ...prevPosts,
+    ]);
+  };
+
   return (
-    <div className="min-h-screen bg-[#F9FAFB] py-8">
+    <div className="min-h-screen bg-white py-8" ref={elementRef}>
+      <Composer onClickPost={onClickPost} />
+
       <div className="max-w-3xl mx-auto px-4 space-y-6">
         {posts.map(({ id, author, content, timestamp, reaction }) => (
           <Post
