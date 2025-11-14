@@ -13,8 +13,10 @@ export const useInteraction = (ref: React.RefObject<HTMLElement | null>) => {
 
     const element = ref.current;
 
-    const onClick = () => {
+    const onClick = (e: MouseEvent) => {
       if (!isAuthenticated) {
+        e.preventDefault();
+        e.stopPropagation();
         navigate("/login");
       }
     };
