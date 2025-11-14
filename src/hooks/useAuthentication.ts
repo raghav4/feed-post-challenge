@@ -30,11 +30,13 @@ export const useAuthentication = () => {
     }
 
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("loggedInUser", username);
     navigate("/");
   };
 
   return {
     isAuthenticated,
+    loggedInUser: localStorage.getItem("loggedInUser") ?? "",
     actions: {
       authenticate,
     },
