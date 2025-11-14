@@ -1,3 +1,98 @@
-export const Signin = () => {
-  return <h1>Sign in</h1>;
+import { LogIn } from "lucide-react";
+import { useEffect } from "react";
+import ReactDOM from "react-dom";
+
+type SigninProps = {
+  onClose: () => void;
+};
+
+export const Signin = ({ onClose }: SigninProps) => {
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  return ReactDOM.createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="w-[520px] flex flex-col rounded-[32px] bg-[#F6F6F7] p-2.5">
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="bg-white px-12 pt-12 pb-8 shadow-[0_18px_48px_rgba(0,0,0,0.06)] rounded-[24px]"
+        >
+          <div className="mx-auto mb-8 flex h-[58px] w-[58px] items-center justify-center rounded-full bg-[#F5F7FA]">
+            <LogIn className="h-7 w-7 text-[#444]" strokeWidth={2} />
+          </div>
+
+          <h2 className="mb-1 text-center text-[22px] font-semibold text-[#1C1C1E]">
+            Sign in to continue
+          </h2>
+
+          <p className="mb-8 text-center text-[15px] text-gray-500">
+            Sign in to access all the features on this app
+          </p>
+
+          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <div>
+              <label
+                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                htmlFor="username"
+              >
+                Email or username
+              </label>
+              <input
+                name="username"
+                id="username"
+                type="text"
+                placeholder="Enter your email or username"
+                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
+                aria-label="Email or username"
+              />
+            </div>
+
+            <div>
+              <label
+                className="mb-2 block text-[14px] font-medium text-[#1C1C1E]"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                className="w-full h-[48px] rounded-xl bg-[#F4F4F5] px-4 text-[15px] text-gray-700 outline-none placeholder:text-gray-400"
+                aria-label="Password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full h-[48px] rounded-[12px] bg-[#4F46E5] text-[15px] font-medium text-white hover:bg-[#4338CA] transition-colors"
+            >
+              Sign In
+            </button>
+          </form>
+        </div>
+
+        <div className="rounded-b-[32px] py-3 mt-2 text-center bg-transparent">
+          <p className="text-[14px] text-gray-600">
+            Don't have an account?{" "}
+            <button
+              type="button"
+              onClick={onClose}
+              className="cursor-pointer font-medium text-[#4F46E5] underline-offset-2"
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
 };
